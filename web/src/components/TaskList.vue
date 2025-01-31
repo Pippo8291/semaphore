@@ -3,6 +3,7 @@
 
     <NewTaskDialog
       v-model="newTaskDialog"
+      @close="loadData()"
       :project-id="template.project_id"
       :template-id="template.id"
       :template-alias="template.name"
@@ -79,6 +80,7 @@ import TaskStatus from '@/components/TaskStatus.vue';
 import TaskLink from '@/components/TaskLink.vue';
 import { TEMPLATE_TYPE_ACTION_TITLES, TEMPLATE_TYPE_ICONS } from '@/lib/constants';
 import NewTaskDialog from '@/components/NewTaskDialog.vue';
+import EventBus from '@/event-bus';
 
 export default {
   components: {
@@ -163,6 +165,11 @@ export default {
       this.sourceTask = task;
       this.newTaskDialog = true;
     },
+  },
+  mounted() {
+    EventBus.$on('i-show-task', async () => {
+      await this.loadData();
+    });
   },
 };
 </script>
